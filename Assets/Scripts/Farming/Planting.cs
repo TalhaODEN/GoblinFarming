@@ -89,7 +89,7 @@ public class Planting : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        if (Inventory_UI.inventory_UI != null && Inventory_UI.inventory_UI.show) // null kontrolü eklendi
+        if (Inventory_UI.inventory_UI != null && Inventory_UI.inventory_UI.show) 
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireCube(topTilemap.GetCellCenterWorld(gridPosition), new Vector3(1, 1, 0));
@@ -185,7 +185,7 @@ public class Planting : MonoBehaviour
 
     public void DropItem(Collectables item, Vector3Int cellPosition)
     {
-        Vector3 spawnLocation = topTilemap.GetCellCenterWorld(cellPosition); // Tıklanan karenin merkezinde spawnla
+        Vector3 spawnLocation = topTilemap.GetCellCenterWorld(cellPosition); 
 
         float dropRadius = 1.5f;
         Vector3 spawnOffset;

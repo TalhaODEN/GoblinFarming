@@ -99,6 +99,6 @@ public class ShowButtonSymbol : MonoBehaviour
     {
         Vector3 worldPosition = transform.position + offset;
         Vector2 screenPosition = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPosition);
-        buttonSymbolRectTransform.position = screenPosition; // Sembolü konumlandır
+        buttonSymbolRectTransform.position = screenPosition; 
     }
 }

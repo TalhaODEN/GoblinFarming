@@ -3,16 +3,14 @@ using UnityEngine;
 
 public class StoneBehaviour : MonoBehaviour
 {
-    public int stoneHealth = 3; // Taş 3 vuruşta kırılacak
-    public AudioClip pickaxeHitSound; // Vuruş sesi (isteğe bağlı)
-    public AudioClip stoneBreakSound; // Kırılma sesi (isteğe bağlı)
-    public int stoneCount; // Taş tipi başına verilecek taş sayısı
-    public Collectables stonePrefab; // Toplanabilir taş prefab'ı
-    private bool isBreaking = false; // Taşın kırılma durumu
-    private bool isDamaged = false; // Taş hasar aldı mı?
-
-    // Vuruş animasyonunun bitiş süresi
-    private float hitAnimationDuration = 0.5f; // Örnek süre, animasyonun bitişine yakın bir süre
+    public int stoneHealth = 3; 
+    public AudioClip pickaxeHitSound; 
+    public AudioClip stoneBreakSound; 
+    public int stoneCount; 
+    public Collectables stonePrefab; 
+    private bool isBreaking = false; 
+    private bool isDamaged = false; 
+    private float hitAnimationDuration = 0.5f; 
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -21,7 +19,7 @@ public class StoneBehaviour : MonoBehaviour
             !isBreaking &&
             !isDamaged)
         {
-            isDamaged = true; // Taş hasar aldı
+            isDamaged = true; 
             TakeDamage();
             StartCoroutine(ResetDamage());
         }
@@ -31,14 +29,12 @@ public class StoneBehaviour : MonoBehaviour
     {
         stoneHealth--;
 
-        // Vuruş sesi
         if (pickaxeHitSound != null)
         {
             AudioSource.PlayClipAtPoint(pickaxeHitSound, transform.position);
         }
 
-        // Her vuruşta taşı küçült
-        float scaleFactor = 0.8f; // Her vuruşta %20 küçülme
+        float scaleFactor = 0.8f; 
         transform.localScale = new Vector3(transform.localScale.x * scaleFactor, transform.localScale.y * scaleFactor, transform.localScale.z);
 
         if (stoneHealth <= 0)
@@ -51,27 +47,24 @@ public class StoneBehaviour : MonoBehaviour
     {
         isBreaking = true;
 
-        // Kırılma sesi
         if (stoneBreakSound != null)
         {
             AudioSource.PlayClipAtPoint(stoneBreakSound, transform.position);
         }
 
-        // Vurma animasyonunun bitmesine 0.2 saniye kalana kadar bekle
         float animationTime = PlayerMovement.playerMovement.animator.GetCurrentAnimatorStateInfo(0).length;
         float remainingTime = animationTime - PlayerMovement.playerMovement.animator.GetCurrentAnimatorStateInfo(0).normalizedTime * animationTime;
 
         yield return new WaitForSeconds(Mathf.Max(0, remainingTime - hitAnimationDuration));
 
-        // Taş yok ediliyor
         Destroy(gameObject);
         DropStones();
     }
 
     private IEnumerator ResetDamage()
     {
-        yield return new WaitForSeconds(0.5f); // Vuruşlar arasında beklemek için süre
-        isDamaged = false; // Taş artık hasar alabilir
+        yield return new WaitForSeconds(0.5f); 
+        isDamaged = false; 
     }
 
     public void DropStones()

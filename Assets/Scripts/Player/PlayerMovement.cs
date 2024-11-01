@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        // Zaman durdurulmuşsa hiçbir işlem yapılmasın
         if (Time.timeScale == 0)
         {
             StopMovementAndAnimation();
@@ -43,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Zaman durdurulmuşsa hareket ettirme
         if (Time.timeScale == 0)
         {
             return;
@@ -117,12 +115,10 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetBool(boolName, state);
     }
-
-    // Zaman durduğunda hareketi ve animasyonları durdur
     private void StopMovementAndAnimation()
     {
-        direction = Vector3.zero;  // Hareketi durdur
-        animator.SetBool("isMoving", false);  // Hareket animasyonunu durdur
-        AudioManager.audioManager.Footsteps(false);  // Adım sesini durdur
+        direction = Vector3.zero;  
+        animator.SetBool("isMoving", false);  
+        AudioManager.audioManager.Footsteps(false);  
     }
 }

@@ -25,6 +25,5 @@ public class GameManager : MonoBehaviour
 
         itemManager = GetComponent<ItemManager>();
 
-        //Inventory.inventory = new Inventory(27);
     }
 }
