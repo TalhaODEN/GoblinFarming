@@ -5,163 +5,157 @@ using UnityEngine.Tilemaps;
 public class Plowing : MonoBehaviour
 {
     public static Plowing plowing;
-    public bool showGrid = false; 
-    public bool showUGrid = false; 
-    private Vector3 playerLastPosition; 
-    public Transform player; 
-    public Tilemap topTilemap; 
-    public Tilemap bottomTilemap; 
-    public Tile plowingTile; 
-    private BoundsInt interactableBounds; 
-    public List<Tile> plowableTiles; 
-    public List<Tile> unplowableTiles; 
-    public Tile unplowingTile; 
-
-
+    public bool showGrid = false;
+    public bool showUGrid = false;
+    private Vector3 playerLastPosition;
+    public Transform player;
+    public Tilemap topTilemap;
+    public Tilemap bottomTilemap;
+    public Tile plowingTile;
+    private BoundsInt interactableBounds;
+    public List<Tile> plowableTiles;
+    public List<Tile> unplowableTiles;
+    public Tile unplowingTile;
+    private UIManager uiManager;
     private void Awake()
     {
-        if(plowing == null)
+        if (plowing == null)
         {
             plowing = this;
         }
+        uiManager = FindObjectOfType<UIManager>();
     }
-    void Update()
+
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (uiManager.IsAnyPanelOpen())
         {
-            if (showUGrid)
-            {
-                showUGrid = false;
-            }
-            showGrid = !showGrid; 
-
-            if (showGrid)
-            {
-                playerLastPosition = player.position; 
-                UpdateInteractableBounds(); 
-            }
+            showGrid = showUGrid = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            if (showGrid)
-            {
-                showGrid = false;
-            }
-
-            showUGrid = !showUGrid; 
-
-            if (showUGrid)
-            {
-                playerLastPosition = player.position; 
-                UpdateInteractableBounds(); 
-            }
-        }
-
+        HandleInput();
         if (showGrid && Input.GetMouseButtonDown(0))
         {
             PlaceTile();
         }
-
         if (showUGrid && Input.GetMouseButtonDown(0))
         {
             ConvertTile();
         }
     }
 
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+           showUGrid = false;
+           ToggleGridVisibility(ref showGrid);
+           if (showGrid) UpdateInteractableBounds();
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+           showGrid = false;
+           ToggleGridVisibility(ref showUGrid);
+           if (showUGrid) UpdateInteractableBounds();
+        } 
+    }
+
+    private void ToggleGridVisibility(ref bool gridVisibility)
+    {
+        gridVisibility = !gridVisibility;
+
+        if (gridVisibility)
+        {
+            playerLastPosition = player.position;
+            UpdateInteractableBounds();
+        }
+    }
+
     private void PlaceTile()
     {
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int cellPosition = topTilemap.WorldToCell(mouseWorldPosition); 
+        Vector3Int cellPosition = GetCellPosition();
 
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(topTilemap.GetCellCenterWorld(cellPosition), new Vector2(1, 1), 0f);
+        if (!IsValidPlacement(cellPosition)) return;
 
-        foreach (var collider in colliders)
+        if (interactableBounds.Contains(cellPosition))
         {
-            if (!collider.CompareTag("Player") && !collider.CompareTag("Collectables") && !collider.CompareTag("Untagged"))
+            Tile clickedTile = topTilemap.GetTile<Tile>(cellPosition);
+            if (plowableTiles.Contains(clickedTile))
             {
+                topTilemap.SetTile(cellPosition, plowingTile);
                 return;
             }
         }
 
+        cellPosition = bottomTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (interactableBounds.Contains(cellPosition))
         {
-            Tile clickedTile = topTilemap.GetTile<Tile>(cellPosition); 
-            if (plowableTiles.Contains(clickedTile)) 
+            Tile clickedTile = bottomTilemap.GetTile<Tile>(cellPosition);
+            if (plowableTiles.Contains(clickedTile))
             {
-                topTilemap.SetTile(cellPosition, plowingTile); 
-                return; 
-            }
-        }
-
-        cellPosition = bottomTilemap.WorldToCell(mouseWorldPosition); 
-        if (interactableBounds.Contains(cellPosition))
-        {
-            Tile clickedTile = bottomTilemap.GetTile<Tile>(cellPosition); 
-            if (plowableTiles.Contains(clickedTile)) 
-            {
-                bottomTilemap.SetTile(cellPosition, plowingTile); 
+                bottomTilemap.SetTile(cellPosition, plowingTile);
             }
         }
     }
 
     private void ConvertTile()
     {
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int cellPosition = topTilemap.WorldToCell(mouseWorldPosition); 
+        Vector3Int cellPosition = GetCellPosition();
 
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(topTilemap.GetCellCenterWorld(cellPosition), new Vector2(1, 1), 0f);
+        if (!IsValidPlacement(cellPosition)) return;
 
-        foreach (var collider in colliders)
+        if (interactableBounds.Contains(cellPosition))
         {
-            if (!collider.CompareTag("Player") && !collider.CompareTag("Collectables") && !collider.CompareTag("Untagged"))
+            Tile clickedTile = topTilemap.GetTile<Tile>(cellPosition);
+            if (unplowableTiles.Contains(clickedTile))
             {
+                topTilemap.SetTile(cellPosition, unplowingTile);
                 return;
             }
         }
 
+        cellPosition = bottomTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (interactableBounds.Contains(cellPosition))
         {
-            Tile clickedTile = topTilemap.GetTile<Tile>(cellPosition); 
-            if (unplowableTiles.Contains(clickedTile)) 
+            Tile clickedTile = bottomTilemap.GetTile<Tile>(cellPosition);
+            if (unplowableTiles.Contains(clickedTile))
             {
-                topTilemap.SetTile(cellPosition, unplowingTile); 
-                return; 
+                bottomTilemap.SetTile(cellPosition, unplowingTile);
             }
         }
+    }
 
-        cellPosition = bottomTilemap.WorldToCell(mouseWorldPosition); 
-        if (interactableBounds.Contains(cellPosition))
+    private Vector3Int GetCellPosition()
+    {
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        return topTilemap.WorldToCell(mouseWorldPosition);
+    }
+
+    private bool IsValidPlacement(Vector3Int cellPosition)
+    {
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(topTilemap.GetCellCenterWorld(cellPosition), new Vector2(1, 1), 0f);
+        foreach (var collider in colliders)
         {
-            Tile clickedTile = bottomTilemap.GetTile<Tile>(cellPosition); 
-            if (unplowableTiles.Contains(clickedTile)) 
+            if (!collider.CompareTag("Player") && !collider.CompareTag("Collectables") && !collider.CompareTag("Untagged"))
             {
-                bottomTilemap.SetTile(cellPosition, unplowingTile); 
+                return false;
             }
         }
+        return true;
     }
 
     private void UpdateInteractableBounds()
     {
-        interactableBounds = new BoundsInt(topTilemap.WorldToCell(playerLastPosition) + new Vector3Int(-1, -1, 0), new Vector3Int(3, 3, 1)); 
+        interactableBounds = new BoundsInt(topTilemap.WorldToCell(playerLastPosition) + new Vector3Int(-1, -1, 0), new Vector3Int(3, 3, 1));
     }
 
     private void OnDrawGizmos()
     {
-        if (showGrid || showUGrid) 
+        if (showGrid || showUGrid)
         {
-            if (showGrid)
-            {
-                Gizmos.color = Color.white;
-            }
-            else if (showUGrid)
-            {
-                Gizmos.color = Color.blue;
-            }
+            Gizmos.color = showGrid ? Color.white : Color.blue;
 
-            BoundsInt bounds = topTilemap.cellBounds;
             Vector3 cellSize = topTilemap.cellSize;
-
             Vector3 playerPosition = new Vector3(
                 Mathf.Floor(playerLastPosition.x / cellSize.x) * cellSize.x,
                 Mathf.Floor(playerLastPosition.y / cellSize.y) * cellSize.y,

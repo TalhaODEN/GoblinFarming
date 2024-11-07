@@ -13,15 +13,4 @@ public class DealerInventory : MonoBehaviour
             dealerInventory = this;
         }
     }
-    public int GetPrice(Collectables item)
-    {
-        foreach (ShopItem shopItem in availableItems)
-        {
-            if (shopItem.itemType == item.type)
-            {
-                return shopItem.price;
-            }
-        }
-        return 0; 
-    }
 }

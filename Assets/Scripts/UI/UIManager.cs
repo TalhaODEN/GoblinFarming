@@ -32,11 +32,34 @@ public class UIManager : MonoBehaviour
         }
         return false; 
     }
+    public bool IsSpecificPanelsOpen(params GameObject[] panels)
+    {
+        foreach(var panel in panels)
+        {
+            if (IsPanelOpen(panel))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool IsAnyPanelActiveExcept(GameObject panelToIgnore)
+    {
+        foreach (GameObject panel in panels)
+        {
+            if (panel != panelToIgnore && panel.activeSelf)
+            {
+                return true; 
+            }
+        }
+        return false; 
+    }
+
     public bool IsPanelOpen(GameObject panel)
     {
         return panel.activeSelf; 
     }
-    public void ShakeButton(GameObject button)
+    public void ShakeButton(GameObject button,float duration = 0.5f,float magnitude = 0.5f)
     {
         if (!isShakingStates.ContainsKey(button))
         {
@@ -47,7 +70,7 @@ public class UIManager : MonoBehaviour
         {
             isShakingStates[button] = true; 
             StopAllCoroutines();
-            StartCoroutine(Shake(button.transform));
+            StartCoroutine(Shake(button.transform,duration,magnitude));
         }
     }
 

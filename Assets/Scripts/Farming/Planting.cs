@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Inventory;
@@ -14,82 +15,83 @@ public class Planting : MonoBehaviour
     public Tilemap bottomTilemap;
     public Tile holeTile;
     public Tile afterHoleTile;
-
-    private BoundsInt interactableBounds;
+    private Inventory_UI inventory_UI;
+    private Plowing plowing;
+    private Tool_Inventory tool_inventory;
     public Vector3Int gridPosition;
     private List<PlantingInfo> plantingInfos = new List<PlantingInfo>();
 
-    private void Start()
+    private void Awake()
     {
         if (planting == null)
         {
             planting = this;
         }
+        if (inventory_UI == null)
+        {
+            inventory_UI = Inventory_UI.inventory_UI;
+        }
+        if (plowing == null)
+        {
+            plowing = Plowing.plowing;
+        }
+        if (tool_inventory == null)
+        {
+            tool_inventory = Tool_Inventory.tool_inventory;
+        }
     }
 
     private void Update()
     {
-        if (Inventory_UI.inventory_UI != null && Inventory_UI.inventory_UI.show) 
+        if (IsInputAllowed())
+        {
+            inventory_UI.show = false;
+            return;
+        }
+
+        if (inventory_UI.show)
         {
             UpdateGridPosition();
-            if (Input.GetMouseButtonDown(0) && Tool_Inventory.tool_inventory.currentToolIndex == 3
-                && !Plowing.plowing.showGrid && !Plowing.plowing.showUGrid 
-                && !CountPanel.countPanel.CountPanelScreen.activeSelf)
+
+            if (CanPlantSeed())
             {
-                PlantSeedAtTile();
+                TryPlantSeed();
             }
         }
-        else if (Input.GetMouseButton(0) && Tool_Inventory.tool_inventory.currentToolIndex == 3
-            && !Plowing.plowing.showGrid && !Plowing.plowing.showUGrid && !Inventory_UI.inventory_UI.inventoryPanel.activeSelf)
+        else if (CanPlantSeed())
         {
-            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int cellPosition = topTilemap.WorldToCell(mouseWorldPosition);
-
-            Tile clickedTile = null;
-
-            if (topTilemap != null)
-            {
-                clickedTile = topTilemap.GetTile<Tile>(cellPosition);
-            }
-
-            if (clickedTile == null && bottomTilemap != null)
-            {
-                clickedTile = bottomTilemap.GetTile<Tile>(cellPosition);
-            }
-
-            if (clickedTile != null)
-            {
-                foreach (var mapping in ItemManager.itemManager.tileCollectibleMappings)
-                {
-                    if (mapping.tile == clickedTile)
-                    {
-                        harvestCrop(clickedTile, cellPosition); 
-                        break; 
-                    }
-                }
-            }
+            HandleHarvest();
         }
+    }
+
+    private bool IsInputAllowed()
+    {
+        return Input.GetKeyDown(KeyCode.Escape)
+               || Input.GetKeyDown(KeyCode.Tab)
+               || Input.GetKeyDown(KeyCode.Space)
+               || Input.GetKeyDown(KeyCode.U)
+               || inventory_UI == null
+               || inventory_UI.inventoryPanel.activeSelf;
+    }
+
+    private bool CanPlantSeed()
+    {
+        return Input.GetMouseButtonDown(0)
+               && tool_inventory.currentToolIndex == 3
+               && !plowing.showGrid
+               && !plowing.showUGrid
+               && !CountPanel.countPanel.CountPanelScreen.activeSelf;
     }
 
     public void UpdateGridPosition()
     {
-        if (!Input.GetKeyDown(KeyCode.Escape) && !Input.GetKeyDown(KeyCode.Tab)
-            && !Input.GetKeyDown(KeyCode.Space) && !Input.GetKeyDown(KeyCode.U)
-            && Inventory_UI.inventory_UI != null 
-            && Inventory_UI.inventory_UI.show && !Inventory_UI.inventory_UI.inventoryPanel.activeSelf) 
-        {
-            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            gridPosition = topTilemap.WorldToCell(mouseWorldPosition);
-        }
-        else
-        {
-            Inventory_UI.inventory_UI.show = false;
-        }
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        gridPosition = topTilemap.WorldToCell(mouseWorldPosition);
     }
 
     public void OnDrawGizmos()
     {
-        if (Inventory_UI.inventory_UI != null && Inventory_UI.inventory_UI.show) 
+        if (inventory_UI != null && inventory_UI.show)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireCube(topTilemap.GetCellCenterWorld(gridPosition), new Vector3(1, 1, 0));
@@ -100,45 +102,43 @@ public class Planting : MonoBehaviour
         }
     }
 
-    public void PlantSeedAtTile()
+    public void TryPlantSeed()
     {
         Vector3Int clickedTilePosition = topTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         Tile clickedTile = topTilemap.GetTile<Tile>(clickedTilePosition);
         Vector3Int playerPosition = topTilemap.WorldToCell(player.position);
-        if (Inventory_UI.inventory_UI.clickedSaveIndex >= 0 &&
-            Inventory_UI.inventory_UI.clickedSaveIndex < PlayerObject.inventory.slots.Count 
-            && PlayerObject.inventory.slots[Inventory_UI.inventory_UI.clickedSaveIndex].itemCount > 0
-            && Vector3Int.Distance(playerPosition, clickedTilePosition) <= 2)
+        var slots = PlayerObject.inventory.slots;
+        var clickedSaveIndex = inventory_UI.clickedSaveIndex;
+        var seedIndex = inventory_UI.seedIndex;
+        var seedDataList = SeedInfo.seedInfo.seedDataList;
+
+        if (CheckPlantCondition(slots, clickedSaveIndex, slots.Count, playerPosition, clickedTilePosition))
         {
             if (clickedTile == null)
             {
                 clickedTile = bottomTilemap.GetTile<Tile>(clickedTilePosition);
+            }
 
-                if (clickedTile != null && clickedTile == holeTile)
-                {
-                    topTilemap.SetTile(clickedTilePosition, afterHoleTile);
-                    PlayerObject.inventory.slots[Inventory_UI.inventory_UI.clickedSaveIndex].RemoveItem(1);
-                    Inventory_UI.inventory_UI.Refresh();
-                    PlantingInfo plantingInfo = new PlantingInfo(clickedTilePosition, PlayerObject.inventory.slots[Inventory_UI.inventory_UI.clickedSaveIndex].icon);
-                    plantingInfos.Add(plantingInfo);
-                    if (Inventory_UI.inventory_UI.seedIndex >= 0 && Inventory_UI.inventory_UI.seedIndex < SeedInfo.seedInfo.seedDataList.Count)
-                    {
-                        StartCoroutine(GrowPlant(plantingInfo, SeedInfo.seedInfo.seedDataList[Inventory_UI.inventory_UI.seedIndex]));
-                    }
-                }
-            }
-            else if (clickedTile == holeTile)
+            if (clickedTile == holeTile)
             {
-                topTilemap.SetTile(clickedTilePosition, afterHoleTile);
-                PlayerObject.inventory.slots[Inventory_UI.inventory_UI.clickedSaveIndex].RemoveItem(1);
-                Inventory_UI.inventory_UI.Refresh();
-                PlantingInfo plantingInfo = new PlantingInfo(clickedTilePosition, PlayerObject.inventory.slots[Inventory_UI.inventory_UI.clickedSaveIndex].icon);
-                plantingInfos.Add(plantingInfo);
-                if (Inventory_UI.inventory_UI.seedIndex >= 0 && Inventory_UI.inventory_UI.seedIndex < SeedInfo.seedInfo.seedDataList.Count)
-                {
-                    StartCoroutine(GrowPlant(plantingInfo, SeedInfo.seedInfo.seedDataList[Inventory_UI.inventory_UI.seedIndex]));
-                }
+                ExecutePlanting(clickedTilePosition, clickedSaveIndex, seedIndex, slots, seedDataList);
             }
+        }
+    }
+
+    private void ExecutePlanting(Vector3Int position, int saveIndex, int seedIndex,
+        List<Slot> slots, List<SeedData> seedDataList)
+    {
+        topTilemap.SetTile(position, afterHoleTile);
+        slots[saveIndex].RemoveItem(1);
+        inventory_UI.Refresh();
+
+        PlantingInfo plantingInfo = new PlantingInfo(position, slots[saveIndex].icon);
+        plantingInfos.Add(plantingInfo);
+
+        if (seedIndex >= 0 && seedIndex < seedDataList.Count)
+        {
+            StartCoroutine(GrowPlant(plantingInfo, seedDataList[seedIndex]));
         }
     }
 
@@ -170,6 +170,45 @@ public class Planting : MonoBehaviour
         topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[3]);
     }
 
+    private bool CheckPlantCondition(List<Slot> slots, int index,
+        int slotsCount, Vector3Int player_position, Vector3Int tile_position)
+    {
+        return index >= 0 &&
+               index < slotsCount
+               && slots[index].itemCount > 0
+               && Vector3Int.Distance(player_position, tile_position) <= 2;
+    }
+
+    private void HandleHarvest()
+    {
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cellPosition = topTilemap.WorldToCell(mouseWorldPosition);
+
+        Tile clickedTile = null;
+
+        if (topTilemap != null)
+        {
+            clickedTile = topTilemap.GetTile<Tile>(cellPosition);
+        }
+
+        if (clickedTile == null && bottomTilemap != null)
+        {
+            clickedTile = bottomTilemap.GetTile<Tile>(cellPosition);
+        }
+
+        if (clickedTile != null)
+        {
+            foreach (var mapping in ItemManager.itemManager.tileCollectibleMappings)
+            {
+                if (mapping.tile == clickedTile)
+                {
+                    harvestCrop(clickedTile, cellPosition);
+                    break;
+                }
+            }
+        }
+    }
+
     private void harvestCrop(Tile clickedTile, Vector3Int cellPosition)
     {
         topTilemap.SetTile(cellPosition, holeTile);
@@ -179,13 +218,13 @@ public class Planting : MonoBehaviour
         Collectables collectiblePrefab = ItemManager.itemManager.GetItemByType(collectibleType);
         if (collectiblePrefab != null)
         {
-            DropItem(collectiblePrefab, cellPosition); 
+            DropItem(collectiblePrefab, cellPosition);
         }
     }
 
     public void DropItem(Collectables item, Vector3Int cellPosition)
     {
-        Vector3 spawnLocation = topTilemap.GetCellCenterWorld(cellPosition); 
+        Vector3 spawnLocation = topTilemap.GetCellCenterWorld(cellPosition);
 
         float dropRadius = 1.5f;
         Vector3 spawnOffset;

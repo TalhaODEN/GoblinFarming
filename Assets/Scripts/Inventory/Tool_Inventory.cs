@@ -28,7 +28,7 @@ public class Tool_Inventory : MonoBehaviour
             HandleToolSwitching();
             UpdateTool();
             UpdateToolUI();
-        }      
+        }
     }
 
     public void SelectTool(int toolIndex)
@@ -38,10 +38,7 @@ public class Tool_Inventory : MonoBehaviour
             if (toolIndex == 3)
             {
                 currentToolIndex = toolIndex;
-                for (int i = 0; i < tools.Count; i++)
-                {
-                    tools[i].SetActive(false);
-                }
+                DeactivateAllTools();
             }
             else if (toolIndex >= 0 && toolIndex < tools.Count)
             {
@@ -51,6 +48,7 @@ public class Tool_Inventory : MonoBehaviour
             }
         }
     }
+
     private void HandleToolSwitching()
     {
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
@@ -64,11 +62,17 @@ public class Tool_Inventory : MonoBehaviour
             {
                 currentToolIndex = (currentToolIndex - 1 + tools.Count + 1) % (tools.Count + 1);
             }
-            if (Input.GetKeyDown(KeyCode.Alpha1)) { currentToolIndex = 0; }
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) { currentToolIndex = 1; }
-            else if (Input.GetKeyDown(KeyCode.Alpha3)) { currentToolIndex = 2; }
-            else if (Input.GetKeyDown(KeyCode.Alpha4)) { currentToolIndex = 3; }
-        }     
+            KeyCode[] keyCodes = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
+
+            for (int i = 0; i < keyCodes.Length; i++)
+            {
+                if (Input.GetKeyDown(keyCodes[i])) 
+                {
+                    currentToolIndex = i;
+                    break;
+                }
+            }
+        }
     }
 
     private bool IsAnyAnimationPlaying()
@@ -89,7 +93,7 @@ public class Tool_Inventory : MonoBehaviour
 
     private void UpdateTool()
     {
-        if (!IsAnyAnimationPlaying()) 
+        if (!IsAnyAnimationPlaying())
         {
             for (int i = 0; i < tools.Count; i++)
             {

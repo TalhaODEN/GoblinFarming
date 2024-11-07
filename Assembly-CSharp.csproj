@@ -61,10 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Items\Collectibles.cs" />
+    <Compile Include="Assets\Scripts\Build\BuildManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\GameManager\GameManager.cs" />
     <Compile Include="Assets\Scripts\Dealer\ShopItem.cs" />
+    <Compile Include="Assets\Scripts\UI\ParentAlphaController.cs" />
     <Compile Include="Assets\Scripts\Items\ItemManager.cs" />
     <Compile Include="Assets\Scripts\Farming\Plowing.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
@@ -88,12 +90,14 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\Time\TimeDisplay.cs" />
+    <Compile Include="Assets\Scripts\Build\BuildingPreview.cs" />
     <Compile Include="Assets\Scripts\Farming\PlantingInfo.cs" />
     <Compile Include="Assets\Scripts\Farming\PlantHole.cs" />
     <Compile Include="Assets\Scripts\Dealer\DealerUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Scripts\Build\RequirementManager.cs" />
     <Compile Include="Assets\Scripts\Environment\RockBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />

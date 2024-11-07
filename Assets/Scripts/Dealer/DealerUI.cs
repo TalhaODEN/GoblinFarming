@@ -8,7 +8,7 @@ public class DealerUI : MonoBehaviour
     public GameObject dealerUIPanel;
     public Button closeButton;
     public static DealerUI dealerUI;
-    public bool isDealerUIActive = false;
+    private bool isDealerUIActive = false;
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class DealerUI : MonoBehaviour
 
     public void ToggleDealerUI()
     {
-        if (isDealerUIActive)
+        if (IsDealerUIActive())
         {
             CloseDealerUI();
         }
