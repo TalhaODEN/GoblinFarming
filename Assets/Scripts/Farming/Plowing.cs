@@ -17,6 +17,7 @@ public class Plowing : MonoBehaviour
     public List<Tile> unplowableTiles;
     public Tile unplowingTile;
     private UIManager uiManager;
+    private Tool_Inventory tool_inventory;
     private void Awake()
     {
         if (plowing == null)
@@ -24,11 +25,13 @@ public class Plowing : MonoBehaviour
             plowing = this;
         }
         uiManager = FindObjectOfType<UIManager>();
+        tool_inventory = FindObjectOfType<Tool_Inventory>();
     }
 
     private void Update()
     {
-        if (uiManager.IsAnyPanelOpen())
+        if (uiManager.IsAnyPanelOpen() || 
+            tool_inventory.currentToolIndex != tool_inventory.toolButtons.Count - 1)
         {
             showGrid = showUGrid = false;
         }
@@ -151,7 +154,8 @@ public class Plowing : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (showGrid || showUGrid)
+        if ((showGrid || showUGrid) && 
+            tool_inventory.currentToolIndex == tool_inventory.toolButtons.Count - 1)
         {
             Gizmos.color = showGrid ? Color.white : Color.blue;
 

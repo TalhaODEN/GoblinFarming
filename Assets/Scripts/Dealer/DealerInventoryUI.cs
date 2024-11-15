@@ -130,43 +130,74 @@ public class DealerInventoryUI : MonoBehaviour
     }
     public void BuyButton()
     {
-        bool result = GoldPanel.goldPanel.RemoveGold(amount * count);
-        if (!result)
+        if (!TryRemoveGold())
         {
             UIManager.uiManager.ShakeButton(buyButton);
+            return;
         }
-        else
+
+        bool itemAdded = TryAddItemToInventory();
+
+        if (!itemAdded)
         {
-            var playerSlots = player.inventory.slots;
-            bool itemAdded = false;
-
-            for (int i = 0; i < playerSlots.Count; i++)
-            {
-                if (playerSlots[i].type == DealerInventory.dealerInventory.availableItems[selectedDealerIndex].GetComponent<ShopItem>().itemType)
-                {
-                    playerSlots[i].itemCount += count;
-                    itemAdded = true;
-                    break;
-                }
-            }
-
-            if (!itemAdded)
-            {
-                for (int i = 0; i < playerSlots.Count; i++)
-                {
-                    if (playerSlots[i].type == CollectibleType.None)
-                    {
-                        playerSlots[i].type = DealerInventory.dealerInventory.availableItems[selectedDealerIndex].GetComponent<ShopItem>().itemType;
-                        playerSlots[i].icon = DealerInventory.dealerInventory.availableItems[selectedDealerIndex].GetComponent<ShopItem>().itemIcon;
-                        playerSlots[i].itemCount = count;
-                        break;
-                    }
-                }
-            }
-            CloseClickedItems();
-            RefreshInventory();
-            CancelButton();
+            TryAddItemToEmptySlot();
         }
+
+        CloseClickedItems();
+        RefreshInventory();
+        CancelButton();
+    }
+
+    private bool TryRemoveGold()
+    {
+        return GoldPanel.goldPanel.RemoveGold(amount * count);
+    }
+
+    private bool TryAddItemToInventory()
+    {
+        var playerSlots = player.inventory.slots;
+        var itemType = GetSelectedItemType();
+
+        foreach (var slot in playerSlots)
+        {
+            if (slot.type == itemType)
+            {
+                slot.itemCount += count;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void TryAddItemToEmptySlot()
+    {
+        var playerSlots = player.inventory.slots;
+        var itemType = GetSelectedItemType();
+        var itemIcon = GetSelectedItemIcon();
+
+        foreach (var slot in playerSlots)
+        {
+            if (slot.type == CollectibleType.None)
+            {
+                slot.type = itemType;
+                slot.icon = itemIcon;
+                slot.itemCount = count;
+                break;
+            }
+        }
+    }
+
+    private CollectibleType GetSelectedItemType()
+    {
+        return DealerInventory.dealerInventory.availableItems[selectedDealerIndex]
+            .GetComponent<ShopItem>()
+            .itemType;
+    }
+    private Sprite GetSelectedItemIcon()
+    {
+        return DealerInventory.dealerInventory.availableItems[selectedDealerIndex]
+            .GetComponent<ShopItem>()
+            .itemIcon;
     }
 
     public void SellButton()
@@ -197,28 +228,44 @@ public class DealerInventoryUI : MonoBehaviour
 
         for (int i = 0; i < playerSlots.Count; i++)
         {
-            if (playerSlots[i].type == CollectibleType.None)
+            if (IsSlotEmpty(playerSlots[i]))
             {
-                for (int j = i + 1; j < playerSlots.Count; j++)
-                {
-                    if (playerSlots[j].type != CollectibleType.None)
-                    {
-                        playerSlots[i].type = playerSlots[j].type;
-                        playerSlots[i].icon = playerSlots[j].icon;
-                        playerSlots[i].itemCount = playerSlots[j].itemCount;
-
-                        playerSlots[j].type = CollectibleType.None;
-                        playerSlots[j].icon = null;
-                        playerSlots[j].itemCount = 0;
-
-                        break;
-                    }
-                }
+                ShiftItemToEmptySlot(i, playerSlots);
             }
         }
     }
 
+    private bool IsSlotEmpty(Inventory.Slot slot)
+    {
+        return slot.type == CollectibleType.None;
+    }
 
+    private void ShiftItemToEmptySlot(int emptySlotIndex, List<Inventory.Slot> playerSlots)
+    {
+        for (int j = emptySlotIndex + 1; j < playerSlots.Count; j++)
+        {
+            if (!IsSlotEmpty(playerSlots[j]))
+            {
+                MoveItemToSlot(emptySlotIndex, j, playerSlots);
+                ClearSlot(j, playerSlots);
+                break;
+            }
+        }
+    }
+
+    private void MoveItemToSlot(int fromIndex, int toIndex, List<Inventory.Slot> playerSlots)
+    {
+        playerSlots[fromIndex].type = playerSlots[toIndex].type;
+        playerSlots[fromIndex].icon = playerSlots[toIndex].icon;
+        playerSlots[fromIndex].itemCount = playerSlots[toIndex].itemCount;
+    }
+
+    private void ClearSlot(int index, List<Inventory.Slot> playerSlots)
+    {
+        playerSlots[index].type = CollectibleType.None;
+        playerSlots[index].icon = null;
+        playerSlots[index].itemCount = 0;
+    }
 
     public void IncreaseButton()
     {
@@ -258,40 +305,48 @@ public class DealerInventoryUI : MonoBehaviour
     {
         switch (check)
         {
-            case 0:
-                List<ShopItem> DealerList = DealerInventory.dealerInventory.availableItems;
-                foreach (ShopItem shopItem in DealerList)
-                {
-                    if(shopItem.itemIcon.name == DealerList[selectedDealerIndex].itemIcon.name)
-                    {
-                        amount = shopItem.price;
-                        return;
-                    }
-                }
+            case 0: 
+                SetDealerItemPrice();
                 break;
-            case 1:
-                var playerSlots = player.inventory.slots;
-                var collectableItems = ItemManager.itemManager.collectableItems;
-                foreach (Inventory.Slot slot in playerSlots)
-                {
-                    if (slot.type == playerSlots[selectedPlayerIndex].type)
-                    {
-                        foreach (Collectables item in collectableItems)
-                        {
-                            if(slot.type == item.type)
-                            {
-                                amount = item.priceForSell;
-                                return;
-                            }
-                        }  
-                    }
-                }
+
+            case 1: 
+                SetPlayerItemPrice();
                 break;
+
             default:
                 break;
         }
     }
-    
 
+    private void SetDealerItemPrice()
+    {
+        List<ShopItem> dealerItems = DealerInventory.dealerInventory.availableItems;
+        ShopItem selectedItem = dealerItems[selectedDealerIndex];
 
+        foreach (ShopItem shopItem in dealerItems)
+        {
+            if (shopItem.itemIcon.name == selectedItem.itemIcon.name)
+            {
+                amount = shopItem.price;
+                return;
+            }
+        }
+    }
+
+    private void SetPlayerItemPrice()
+    {
+        var playerSlots = player.inventory.slots;
+        var collectableItems = ItemManager.itemManager.collectableItems;
+
+        Inventory.Slot selectedSlot = playerSlots[selectedPlayerIndex];
+
+        foreach (Collectables item in collectableItems)
+        {
+            if (selectedSlot.type == item.type)
+            {
+                amount = item.priceForSell;
+                return;
+            }
+        }
+    }
 }

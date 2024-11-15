@@ -8,15 +8,16 @@ public class PlantHole : MonoBehaviour
     public Tilemap bottomTilemap;
     public Tile plantableTile;
     public Tile plantHoleTile;
-
     private BoundsInt interactableBounds;
-    private bool isPlanting;
+    private bool isPlanting=false;
 
     void Update()
     {
         UpdateInteractableBounds();
 
-        if (Input.GetMouseButton(0) && !PlayerMovement.playerMovement.animator.GetBool("isMoving"))
+        if (Input.GetMouseButton(0) && 
+            !PlayerMovement.playerMovement.animator.GetBool("isMoving") && 
+            Tool_Inventory.tool_inventory.currentToolIndex == Tool_Inventory.tool_inventory.toolButtons.Count - 1)
         {
             Vector3Int cellPosition = GetCurrentGridCell();
 
@@ -51,11 +52,14 @@ public class PlantHole : MonoBehaviour
     private bool CanPlant(Vector3Int cellPosition)
     {
         TileBase checkTile = topTilemap.GetTile(cellPosition) ?? bottomTilemap.GetTile(cellPosition);
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(topTilemap.GetCellCenterWorld(cellPosition), new Vector2(1, 1), 0f);
+        Collider2D[] colliders = Physics2D.OverlapBoxAll
+            (topTilemap.GetCellCenterWorld(cellPosition), new Vector2(1, 1), 0f);
         bool hasInvalidCollider = CheckForInvalidColliders(colliders);
 
-        return (checkTile == plantableTile) && !Plowing.plowing.showGrid &&
-               !Plowing.plowing.showUGrid && !hasInvalidCollider &&
+        return (checkTile == plantableTile) && 
+               !Plowing.plowing.showGrid &&
+               !Plowing.plowing.showUGrid && 
+               !hasInvalidCollider &&
                !Inventory_UI.inventory_UI.show;
     }
 
@@ -63,7 +67,9 @@ public class PlantHole : MonoBehaviour
     {
         foreach (var collider in colliders)
         {
-            if (!collider.CompareTag("Player") && !collider.CompareTag("Collectables") && !collider.CompareTag("Untagged"))
+            if (!collider.CompareTag("Player") && 
+                !collider.CompareTag("Collectables") && 
+                !collider.CompareTag("Untagged"))
             {
                 return true;
             }
@@ -80,12 +86,13 @@ public class PlantHole : MonoBehaviour
         }
 
         AnimatorStateInfo stateInfo = PlayerMovement.playerMovement.animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("digging") && stateInfo.normalizedTime >= 1.0f)
+        if (stateInfo.IsName("digging") && stateInfo.normalizedTime >= 0.95f)
         {
             SetTile(cellPosition, plantHoleTile);
             PlayerMovement.playerMovement.animator.SetBool("isDigging", false);
-            isPlanting = false;
+            
         }
+        isPlanting = false;
     }
 
     private void ResetPlanting()

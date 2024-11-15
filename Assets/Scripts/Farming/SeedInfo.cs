@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.Tilemaps;
 
 [System.Serializable]
@@ -8,12 +9,14 @@ public class SeedData
 {
     public Sprite seedType;
     public List<Tile> growTiles;
-    public float timeToGrow;
-    public SeedData(Sprite seedType, List<Tile> growTiles,float timeToGrow)
+    public List<Tile> fadedTiles;
+    public float timeToGrow; 
+    public SeedData(Sprite seedType, List<Tile> growTiles,float timeToGrow,List<Tile> fadedTiles)
     {
         this.seedType = seedType;
         this.growTiles = growTiles;
         this.timeToGrow = timeToGrow;
+        this.fadedTiles = fadedTiles;
     }
 }
 

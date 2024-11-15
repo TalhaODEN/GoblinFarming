@@ -73,45 +73,46 @@ public class Inventory_UI : MonoBehaviour
 
     public void Refresh()
     {
-        if (slots.Count == player.inventory.slots.Count)
+        if(slots.Count != player.inventory.slots.Count)
         {
-            for (int i = 0; i < slots.Count; i++)
+            return;
+        }
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (player.inventory.slots[i].type != CollectibleType.None)
             {
-                if (player.inventory.slots[i].type != CollectibleType.None)
+                slots[i].SetItem(player.inventory.slots[i]);
+            }
+            else
+            {
+                slots[i].SetEmpty();
+                for (int j = i + 1; j < player.inventory.slots.Count; j++)
                 {
-                    slots[i].SetItem(player.inventory.slots[i]);
-                }
-                else
-                {
-                    slots[i].SetEmpty();
-                    for (int j = i + 1; j < player.inventory.slots.Count; j++)
+                    if (player.inventory.slots[j].type != CollectibleType.None)
                     {
-                        if (player.inventory.slots[j].type != CollectibleType.None)
-                        {
-                            player.inventory.slots[i].type = player.inventory.slots[j].type;
-                            player.inventory.slots[i].icon = player.inventory.slots[j].icon;
-                            player.inventory.slots[i].itemCount = player.inventory.slots[j].itemCount;
+                        player.inventory.slots[i].type = player.inventory.slots[j].type;
+                        player.inventory.slots[i].icon = player.inventory.slots[j].icon;
+                        player.inventory.slots[i].itemCount = player.inventory.slots[j].itemCount;
 
-                            player.inventory.slots[j].type = CollectibleType.None;
-                            player.inventory.slots[j].icon = null;
-                            player.inventory.slots[j].itemCount = 0;
+                        player.inventory.slots[j].type = CollectibleType.None;
+                        player.inventory.slots[j].icon = null;
+                        player.inventory.slots[j].itemCount = 0;
 
-                            break;
-                        }
+                        break;
                     }
                 }
             }
+        }
 
-            for (int i = 0; i < slots.Count; i++)
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (player.inventory.slots[i].type != CollectibleType.None)
             {
-                if (player.inventory.slots[i].type != CollectibleType.None)
-                {
-                    slots[i].SetItem(player.inventory.slots[i]);
-                }
-                else
-                {
-                    slots[i].SetEmpty();
-                }
+                slots[i].SetItem(player.inventory.slots[i]);
+            }
+            else
+            {
+                slots[i].SetEmpty();
             }
         }
     }
@@ -169,24 +170,22 @@ public class Inventory_UI : MonoBehaviour
         seedIndex = 0;
         clickedSaveIndex = index;
         Image iconImage = iconButtons[index].GetComponentInChildren<Image>();
-        if (iconImage.sprite != null)
+        if(iconImage.sprite == null)
         {
-            foreach (SeedData si in SeedInfo.seedInfo.seedDataList)
+            return;
+        }
+        foreach (SeedData si in SeedInfo.seedInfo.seedDataList)
+        {
+            if (iconImage.sprite.name == si.seedType.name)
             {
-                if (iconImage.sprite.name == si.seedType.name)
+                if (!show)
                 {
-                    if (!show)
-                    {
-                        show = true;
-                        ToggleInventory();
-                    }
-                    break;
+                    show = true;
+                    ToggleInventory();
                 }
-                else
-                {
-                    seedIndex++;
-                }
+                break;
             }
+            seedIndex++;
         }
     }
 }

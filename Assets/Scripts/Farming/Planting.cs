@@ -19,8 +19,8 @@ public class Planting : MonoBehaviour
     private Plowing plowing;
     private Tool_Inventory tool_inventory;
     public Vector3Int gridPosition;
-    private List<PlantingInfo> plantingInfos = new List<PlantingInfo>();
-
+    public List<PlantingInfo> plantingInfos = new List<PlantingInfo>();
+    private float lastDailyCheckTime = -1f;
     private void Awake()
     {
         if (planting == null)
@@ -43,6 +43,15 @@ public class Planting : MonoBehaviour
 
     private void Update()
     {
+        int currentHour = Mathf.FloorToInt(TimeManager.timeManager.gameTime);
+
+        if (currentHour != lastDailyCheckTime)
+        {
+            Debug.Log("DailyHealthCheck Çağrıldı.");
+            DailyHealthCheckForAllPlants();
+            lastDailyCheckTime = currentHour; 
+        }
+
         if (IsInputAllowed())
         {
             inventory_UI.show = false;
@@ -63,7 +72,16 @@ public class Planting : MonoBehaviour
             HandleHarvest();
         }
     }
-
+    private void DailyHealthCheckForAllPlants()
+    {
+        foreach (var plantingInfo in plantingInfos)
+        {
+            if (plantingInfo.health > 0)
+            {
+                plantingInfo.DailyHealthCheck(); 
+            }
+        }
+    }
     private bool IsInputAllowed()
     {
         return Input.GetKeyDown(KeyCode.Escape)
@@ -73,11 +91,11 @@ public class Planting : MonoBehaviour
                || inventory_UI == null
                || inventory_UI.inventoryPanel.activeSelf;
     }
-
+    
     private bool CanPlantSeed()
     {
         return Input.GetMouseButtonDown(0)
-               && tool_inventory.currentToolIndex == 3
+               && tool_inventory.currentToolIndex == tool_inventory.toolButtons.Count - 1
                && !plowing.showGrid
                && !plowing.showUGrid
                && !CountPanel.countPanel.CountPanelScreen.activeSelf;
@@ -144,31 +162,58 @@ public class Planting : MonoBehaviour
 
     private IEnumerator GrowPlant(PlantingInfo plantingInfo, SeedData seedData)
     {
-        float totalGrowTime = seedData.timeToGrow;
+        float totalGrowTime = seedData.timeToGrow * 60f;
         float elapsed = 0f;
+        Debug.Log("totalgrowtime = " + totalGrowTime);
 
         while (elapsed < totalGrowTime)
         {
-            elapsed += TimeManager.timeManager.gameSpeed * Time.deltaTime;
+            elapsed += (TimeManager.timeManager.gameSpeed * TimeManager.timeManager.timeScale * Time.deltaTime) * plantingInfo.growthModifier;
+
             float growthPercentage = elapsed / totalGrowTime;
 
             if (growthPercentage >= 0.25f && growthPercentage < 0.5f)
             {
+                if (plantingInfo.health <= 0)
+                {
+                    topTilemap.SetTile(plantingInfo.tilePosition, seedData.fadedTiles[0]);
+                    yield break; 
+                }
+
                 topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[0]);
             }
             else if (growthPercentage >= 0.5f && growthPercentage < 0.75f)
             {
+                if (plantingInfo.health <= 0)
+                {
+                    topTilemap.SetTile(plantingInfo.tilePosition, seedData.fadedTiles[1]);
+                    yield break; 
+                }
+
                 topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[1]);
             }
             else if (growthPercentage >= 0.75f)
             {
+                if (plantingInfo.health <= 0)
+                {
+                    topTilemap.SetTile(plantingInfo.tilePosition, seedData.fadedTiles[2]);
+                    yield break; 
+                }
+
                 topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[2]);
             }
 
             yield return null;
         }
-        topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[3]);
+
+        if (plantingInfo.health > 0)
+        {
+            plantingInfo.isMature = true;
+            Debug.Log($"saat: {TimeManager.timeManager.GetCurrentHour()}:{TimeManager.timeManager.GetCurrentMinute()}");
+            topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[3]); 
+        }
     }
+
 
     private bool CheckPlantCondition(List<Slot> slots, int index,
         int slotsCount, Vector3Int player_position, Vector3Int tile_position)
@@ -205,7 +250,18 @@ public class Planting : MonoBehaviour
                     harvestCrop(clickedTile, cellPosition);
                     break;
                 }
+                
             }
+            /*foreach(var wasted1 in plantingInfos){
+                     foreach(var wasted2 in wasted1.fadedTiles){
+                        if(clickedTile == wasted2){
+                           topTilemap.SetTile(cellPosition,holeTile)
+                           break;
+                        }
+
+                     }             
+                
+              }*/
         }
     }
 

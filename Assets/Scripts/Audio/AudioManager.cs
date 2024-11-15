@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource playerFootstep;
+    [SerializeField] private AudioSource playerFootstep;
     public static AudioManager audioManager;
-
+    [SerializeField] private AudioSource wateringSound;
     private void Awake()
     {
         if(audioManager == null)
@@ -29,6 +29,17 @@ public class AudioManager : MonoBehaviour
             {
                 playerFootstep.Stop();
             }
+        }
+    }
+    public void WateringSound(bool check)
+    {
+        if (check && !wateringSound.isPlaying)
+        {
+            wateringSound.Play();
+        }
+        else if (!check && wateringSound.isPlaying)
+        {
+            wateringSound.Stop();
         }
     }
 

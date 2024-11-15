@@ -17,7 +17,7 @@ public class Tool_Inventory : MonoBehaviour
         {
             tool_inventory = this;
         }
-        currentToolIndex = 3;
+        currentToolIndex = toolButtons.Count - 1;
         UpdateToolUI();
     }
 
@@ -35,7 +35,7 @@ public class Tool_Inventory : MonoBehaviour
     {
         if (!IsAnyAnimationPlaying() && !UIManager.uiManager.IsAnyPanelOpen())
         {
-            if (toolIndex == 3)
+            if (toolIndex >= tools.Count)
             {
                 currentToolIndex = toolIndex;
                 DeactivateAllTools();
@@ -56,13 +56,13 @@ public class Tool_Inventory : MonoBehaviour
         {
             if (scrollInput > 0f)
             {
-                currentToolIndex = (currentToolIndex + 1) % (tools.Count + 1);
+                currentToolIndex = (currentToolIndex + 1) % (toolButtons.Count);
             }
             else if (scrollInput < 0f)
             {
-                currentToolIndex = (currentToolIndex - 1 + tools.Count + 1) % (tools.Count + 1);
+                currentToolIndex = (currentToolIndex - 1 + toolButtons.Count) % (toolButtons.Count);
             }
-            KeyCode[] keyCodes = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
+            KeyCode[] keyCodes = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5 };
 
             for (int i = 0; i < keyCodes.Length; i++)
             {
@@ -80,7 +80,8 @@ public class Tool_Inventory : MonoBehaviour
         return PlayerMovement.playerMovement.animator.GetBool("isAttacking") ||
                PlayerMovement.playerMovement.animator.GetBool("isAxeHitting") ||
                PlayerMovement.playerMovement.animator.GetBool("isMining") ||
-               PlayerMovement.playerMovement.animator.GetBool("isDigging");
+               PlayerMovement.playerMovement.animator.GetBool("isDigging") ||
+               PlayerMovement.playerMovement.animator.GetBool("isWatering");
     }
 
     public void DeactivateAllTools()

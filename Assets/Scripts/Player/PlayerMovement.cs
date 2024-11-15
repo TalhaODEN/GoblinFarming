@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
     private Vector3 direction;
     public static PlayerMovement playerMovement;
-
+    private float lastRotationY = 0f;
     private void Awake()
     {
         if (playerMovement == null)
@@ -55,40 +55,54 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimateMovement(Vector3 direction)
     {
-        if (direction.x != 0 || direction.y != 0)
+        bool isMoving = direction.x != 0 || direction.y != 0;
+
+        animator.SetBool("isDigging", false);
+        animator.SetBool("isMoving", isMoving);
+
+        if (isMoving)
         {
-            animator.SetBool("isDigging", false);
-            animator.SetBool("isMoving", true);
-            transform.rotation = Quaternion.Euler(0, direction.x < 0 ? 180 : 0, 0);
+            UpdateRotation(direction);
             AudioManager.audioManager.Footsteps(true);
         }
         else
         {
-            animator.SetBool("isMoving", false);
             AudioManager.audioManager.Footsteps(false);
         }
     }
+    private void UpdateRotation(Vector3 direction)
+    {
+        if (direction.x == 0)
+        {
+            transform.rotation = Quaternion.Euler(0, lastRotationY, 0);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, direction.x < 0 ? 180 : 0, 0);
+        }
 
+        lastRotationY = transform.rotation.eulerAngles.y;
+    }
     private void HandleToolUsage()
     {
-        if (!animator.GetBool("isMoving"))
+        if (animator.GetBool("isMoving"))
         {
-            Tool_Inventory.tool_inventory.DeactivateAllTools();
-
-            switch (Tool_Inventory.tool_inventory.currentToolIndex)
-            {
-                case 0:
-                    SetAnimationState("isAttacking", true);
-                    break;
-                case 1:
-                    SetAnimationState("isAxeHitting", true);
-                    break;
-                case 2:
-                    SetAnimationState("isMining", true);
-                    break;
-                default:
-                    break;
-            }
+            return;
+        }
+        Tool_Inventory.tool_inventory.DeactivateAllTools();
+        switch (Tool_Inventory.tool_inventory.currentToolIndex)
+        {
+            case 0:
+                SetAnimationState("isAttacking", true);
+                break;
+            case 1:
+                SetAnimationState("isAxeHitting", true);
+                break;
+            case 2:
+                SetAnimationState("isMining", true);
+                break;
+            default:
+                break;
         }
     }
 

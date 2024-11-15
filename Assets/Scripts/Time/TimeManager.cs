@@ -10,7 +10,7 @@ public class TimeManager : MonoBehaviour
     public event Action OnTimeChange;
 
     private bool isTimePaused = false;
-    private float timeScale = 1f;
+    public float timeScale = 1f;
 
     private void Awake()
     {

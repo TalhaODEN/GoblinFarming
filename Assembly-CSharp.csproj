@@ -79,6 +79,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Scripts\Farming\Planting.cs" />
     <Compile Include="Assets\Scripts\Farming\SeedInfo.cs" />
+    <Compile Include="Assets\Scripts\Effects\WateringEffect.cs" />
     <Compile Include="Assets\Scripts\Inventory\Tool_Inventory.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Assets\Scripts\Farming\PlantingInfo.cs" />
     <Compile Include="Assets\Scripts\Farming\PlantHole.cs" />
     <Compile Include="Assets\Scripts\Dealer\DealerUI.cs" />
+    <Compile Include="Assets\Scripts\Farming\Watering.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
