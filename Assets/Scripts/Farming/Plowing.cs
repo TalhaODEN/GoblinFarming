@@ -18,6 +18,12 @@ public class Plowing : MonoBehaviour
     public Tile unplowingTile;
     private UIManager uiManager;
     private Tool_Inventory tool_inventory;
+
+    public GameObject whiteGridPrefab;  // White grid prefab
+    public GameObject blueGridPrefab;   // Blue grid prefab
+
+    private GameObject currentGridObject; // To hold the instantiated grid
+
     private void Awake()
     {
         if (plowing == null)
@@ -30,7 +36,7 @@ public class Plowing : MonoBehaviour
 
     private void Update()
     {
-        if (uiManager.IsAnyPanelOpen() || 
+        if (uiManager.IsAnyPanelOpen() ||
             tool_inventory.currentToolIndex != tool_inventory.toolButtons.Count - 1)
         {
             showGrid = showUGrid = false;
@@ -51,16 +57,16 @@ public class Plowing : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-           showUGrid = false;
-           ToggleGridVisibility(ref showGrid);
-           if (showGrid) UpdateInteractableBounds();
+            showUGrid = false;
+            ToggleGridVisibility(ref showGrid);
+            if (showGrid) UpdateInteractableBounds();
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
-           showGrid = false;
-           ToggleGridVisibility(ref showUGrid);
-           if (showUGrid) UpdateInteractableBounds();
-        } 
+            showGrid = false;
+            ToggleGridVisibility(ref showUGrid);
+            if (showUGrid) UpdateInteractableBounds();
+        }
     }
 
     private void ToggleGridVisibility(ref bool gridVisibility)
@@ -71,6 +77,36 @@ public class Plowing : MonoBehaviour
         {
             playerLastPosition = player.position;
             UpdateInteractableBounds();
+
+            // Get the player's current tile position and adjust to the left by one tile
+            Vector3Int playerTilePosition = topTilemap.WorldToCell(playerLastPosition);
+            Vector3Int leftTilePosition = playerTilePosition + new Vector3Int(-1, 0, 0);
+
+            // Convert this adjusted tile position to world coordinates
+            Vector3 adjustedPosition = topTilemap.GetCellCenterWorld(leftTilePosition);
+
+            // Apply a 0.5 offset to the x-coordinate to correct the 0.5 unit shift
+            adjustedPosition.x -= 0.5f;
+
+            // Instantiate the correct grid prefab based on the state
+            if (currentGridObject != null)
+                Destroy(currentGridObject); // Destroy the previous grid
+
+            if (showGrid)
+            {
+                currentGridObject = Instantiate(whiteGridPrefab, adjustedPosition, Quaternion.identity);
+            }
+            else if (showUGrid)
+            {
+                currentGridObject = Instantiate(blueGridPrefab, adjustedPosition, Quaternion.identity);
+            }
+        }
+        else
+        {
+            if (currentGridObject != null)
+            {
+                Destroy(currentGridObject); // Destroy the grid when it is no longer visible
+            }
         }
     }
 
@@ -150,34 +186,5 @@ public class Plowing : MonoBehaviour
     private void UpdateInteractableBounds()
     {
         interactableBounds = new BoundsInt(topTilemap.WorldToCell(playerLastPosition) + new Vector3Int(-1, -1, 0), new Vector3Int(3, 3, 1));
-    }
-
-    private void OnDrawGizmos()
-    {
-        if ((showGrid || showUGrid) && 
-            tool_inventory.currentToolIndex == tool_inventory.toolButtons.Count - 1)
-        {
-            Gizmos.color = showGrid ? Color.white : Color.blue;
-
-            Vector3 cellSize = topTilemap.cellSize;
-            Vector3 playerPosition = new Vector3(
-                Mathf.Floor(playerLastPosition.x / cellSize.x) * cellSize.x,
-                Mathf.Floor(playerLastPosition.y / cellSize.y) * cellSize.y,
-                playerLastPosition.z
-            );
-
-            for (int x = -1; x <= 1; x++)
-            {
-                for (int y = -1; y <= 1; y++)
-                {
-                    Vector3 cellPosition = playerPosition + new Vector3(
-                        x * cellSize.x + cellSize.x / 2,
-                        y * cellSize.y + cellSize.y / 2,
-                        0
-                    );
-                    Gizmos.DrawWireCube(cellPosition, new Vector3(cellSize.x, cellSize.y, 1f));
-                }
-            }
-        }
     }
 }

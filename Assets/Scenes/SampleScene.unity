@@ -30596,6 +30596,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 42582e7c3d75b194a9dbdaa24e40fc4f, type: 2}
   - {fileID: 11400000, guid: bb5e1827bdc4285419acaada260e0bae, type: 2}
   unplowingTile: {fileID: 11400000, guid: 89ad8f101be8f994fa418e031f307701, type: 2}
+  whiteGridPrefab: {fileID: 7056058641401824985, guid: c314fb3deac965d418116952224892c2, type: 3}
+  blueGridPrefab: {fileID: 1735682067820367207, guid: 4869d417f10ed824e970a4c6cde59d34, type: 3}
 --- !u!114 &1392174909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30632,6 +30634,7 @@ MonoBehaviour:
   afterHoleTile: {fileID: 11400000, guid: bb5e1827bdc4285419acaada260e0bae, type: 2}
   gridPosition: {x: 0, y: 0, z: 0}
   plantingInfos: []
+  cursorObjectPrefab: {fileID: 4854892123189356355, guid: 891e97611053d7e45aafb4d5b869f756, type: 3}
 --- !u!114 &1392174911
 MonoBehaviour:
   m_ObjectHideFlags: 0

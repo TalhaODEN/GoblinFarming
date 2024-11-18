@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Inventory;
@@ -21,6 +20,9 @@ public class Planting : MonoBehaviour
     public Vector3Int gridPosition;
     public List<PlantingInfo> plantingInfos = new List<PlantingInfo>();
     private float lastDailyCheckTime = -1f;
+    public GameObject cursorObjectPrefab;
+    private GameObject cursorObject; 
+
     private void Awake()
     {
         if (planting == null)
@@ -39,6 +41,11 @@ public class Planting : MonoBehaviour
         {
             tool_inventory = Tool_Inventory.tool_inventory;
         }
+
+        if (cursorObjectPrefab != null)
+        {
+            cursorObject = Instantiate(cursorObjectPrefab);
+        }
     }
 
     private void Update()
@@ -49,7 +56,7 @@ public class Planting : MonoBehaviour
         {
             Debug.Log("DailyHealthCheck Çağrıldı.");
             DailyHealthCheckForAllPlants();
-            lastDailyCheckTime = currentHour; 
+            lastDailyCheckTime = currentHour;
         }
 
         if (IsInputAllowed())
@@ -58,30 +65,55 @@ public class Planting : MonoBehaviour
             return;
         }
 
-        if (inventory_UI.show)
+        if (inventory_UI.show && cursorObject != null)
         {
-            UpdateGridPosition();
+            cursorObject.SetActive(true); 
+            UpdateGridPosition(); 
+            UpdateCursorPosition(); 
 
             if (CanPlantSeed())
             {
                 TryPlantSeed();
             }
         }
-        else if (CanPlantSeed())
+        else if (cursorObject != null)
+        {
+            cursorObject.SetActive(false); 
+        }
+
+        if (!inventory_UI.show && CanPlantSeed())
         {
             HandleHarvest();
         }
     }
+
+    private void UpdateCursorPosition()
+    {
+        if (cursorObject != null)
+        {
+            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int gridPosition = topTilemap.WorldToCell(mouseWorldPosition);
+
+            Vector3 gridWorldPosition = topTilemap.GetCellCenterWorld(gridPosition);
+            gridWorldPosition.x -= 0.5f;  
+
+            cursorObject.transform.position = new Vector3(gridWorldPosition.x, gridWorldPosition.y, cursorObject.transform.position.z); // Z değeri sabit tutulur
+        }
+    }
+
+
+
     private void DailyHealthCheckForAllPlants()
     {
         foreach (var plantingInfo in plantingInfos)
         {
             if (plantingInfo.health > 0)
             {
-                plantingInfo.DailyHealthCheck(); 
+                plantingInfo.DailyHealthCheck();
             }
         }
     }
+
     private bool IsInputAllowed()
     {
         return Input.GetKeyDown(KeyCode.Escape)
@@ -91,7 +123,7 @@ public class Planting : MonoBehaviour
                || inventory_UI == null
                || inventory_UI.inventoryPanel.activeSelf;
     }
-    
+
     private bool CanPlantSeed()
     {
         return Input.GetMouseButtonDown(0)
@@ -105,19 +137,6 @@ public class Planting : MonoBehaviour
     {
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         gridPosition = topTilemap.WorldToCell(mouseWorldPosition);
-    }
-
-    public void OnDrawGizmos()
-    {
-        if (inventory_UI != null && inventory_UI.show)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(topTilemap.GetCellCenterWorld(gridPosition), new Vector3(1, 1, 0));
-        }
-        else
-        {
-            Gizmos.color = Color.clear;
-        }
     }
 
     public void TryPlantSeed()
@@ -164,7 +183,6 @@ public class Planting : MonoBehaviour
     {
         float totalGrowTime = seedData.timeToGrow * 60f;
         float elapsed = 0f;
-        Debug.Log("totalgrowtime = " + totalGrowTime);
 
         while (elapsed < totalGrowTime)
         {
@@ -177,7 +195,7 @@ public class Planting : MonoBehaviour
                 if (plantingInfo.health <= 0)
                 {
                     topTilemap.SetTile(plantingInfo.tilePosition, seedData.fadedTiles[0]);
-                    yield break; 
+                    yield break;
                 }
 
                 topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[0]);
@@ -187,7 +205,7 @@ public class Planting : MonoBehaviour
                 if (plantingInfo.health <= 0)
                 {
                     topTilemap.SetTile(plantingInfo.tilePosition, seedData.fadedTiles[1]);
-                    yield break; 
+                    yield break;
                 }
 
                 topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[1]);
@@ -197,7 +215,7 @@ public class Planting : MonoBehaviour
                 if (plantingInfo.health <= 0)
                 {
                     topTilemap.SetTile(plantingInfo.tilePosition, seedData.fadedTiles[2]);
-                    yield break; 
+                    yield break;
                 }
 
                 topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[2]);
@@ -209,11 +227,9 @@ public class Planting : MonoBehaviour
         if (plantingInfo.health > 0)
         {
             plantingInfo.isMature = true;
-            Debug.Log($"saat: {TimeManager.timeManager.GetCurrentHour()}:{TimeManager.timeManager.GetCurrentMinute()}");
-            topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[3]); 
+            topTilemap.SetTile(plantingInfo.tilePosition, seedData.growTiles[3]);
         }
     }
-
 
     private bool CheckPlantCondition(List<Slot> slots, int index,
         int slotsCount, Vector3Int player_position, Vector3Int tile_position)
@@ -250,18 +266,7 @@ public class Planting : MonoBehaviour
                     harvestCrop(clickedTile, cellPosition);
                     break;
                 }
-                
             }
-            /*foreach(var wasted1 in plantingInfos){
-                     foreach(var wasted2 in wasted1.fadedTiles){
-                        if(clickedTile == wasted2){
-                           topTilemap.SetTile(cellPosition,holeTile)
-                           break;
-                        }
-
-                     }             
-                
-              }*/
         }
     }
 

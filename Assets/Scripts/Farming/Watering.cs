@@ -52,13 +52,13 @@ public class Watering : MonoBehaviour
                 playerMovement.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
             {
                 AudioManager.audioManager.WateringSound(isAnimationCompleted);
+                isWatering = false;
                 isAnimationCompleted = true;
                 WaterCurrentPlant(); 
             }
         }
 
-        if (isWatering && (!Input.GetMouseButton(0) ||
-            playerMovement.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f))
+        if (isWatering && !Input.GetMouseButton(0))
         {
             isWatering = false;
             playerMovement.animator.SetBool("isWatering", false);
