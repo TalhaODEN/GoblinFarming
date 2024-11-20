@@ -9,6 +9,7 @@ TagManager:
   - AxeCollider
   - PickaxeCollider
   - Dealer
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -66,6 +67,9 @@ TagManager:
     locked: 0
   - name: Animals
     uniqueID: 4154412395
+    locked: 0
+  - name: Enemy
+    uniqueID: 3082337359
     locked: 0
   - name: Player
     uniqueID: 318623653

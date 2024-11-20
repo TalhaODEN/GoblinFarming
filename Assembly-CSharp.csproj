@@ -91,6 +91,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\Time\TimeDisplay.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuEvents.cs" />
     <Compile Include="Assets\Scripts\Build\BuildingPreview.cs" />
     <Compile Include="Assets\Scripts\Farming\PlantingInfo.cs" />
     <Compile Include="Assets\Scripts\Farming\PlantHole.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\Build\RequirementManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuInterface.cs" />
     <Compile Include="Assets\Scripts\Environment\RockBehaviour.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
