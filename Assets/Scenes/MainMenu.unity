@@ -122,7 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &6977652
 GameObject:
@@ -1163,8 +1162,6 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 202476098}
-<<<<<<< HEAD
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
 =======
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
 >>>>>>> Staging
@@ -1175,8 +1172,6 @@ RectTransform:
   - {fileID: 220080406}
   - {fileID: 1237090525}
   - {fileID: 1651272793}
-<<<<<<< HEAD
-  m_Father: {fileID: 1350252560}
 =======
   m_Father: {fileID: 223572392}
 >>>>>>> Staging
@@ -1237,7 +1232,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-<<<<<<< HEAD
 =======
 --- !u!1 &218147448
 GameObject:
@@ -1464,20 +1458,12 @@ MonoBehaviour:
   m_Material: {fileID: 0}
 <<<<<<< HEAD
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-=======
-  m_Color: {r: 0.8196079, g: 0.81568635, b: 0.8196079, a: 1}
->>>>>>> Staging
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-<<<<<<< HEAD
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-=======
-  m_Sprite: {fileID: 2193479657588290036, guid: c902e08bd83e04947b6e8d7f31f385be, type: 3}
->>>>>>> Staging
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1495,7 +1481,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 220080405}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &223572391
 GameObject:
@@ -1603,7 +1588,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &261228926
 GameObject:
@@ -1745,7 +1729,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 331513608349879409, guid: bfaca1cd67ae34a48b9915b465d16dc7, type: 3}
   m_PrefabInstance: {fileID: 252771580622630096}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &279696156
 GameObject:
@@ -2002,7 +1985,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b575c082a1e14a48a417444d850c67e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
 =======
   audioSlider: {fileID: 202476100}
   audioButton: {fileID: 1350252561}
@@ -2326,7 +2308,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &443330228
 GameObject:
@@ -2665,7 +2646,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
-<<<<<<< HEAD
 =======
 --- !u!1 &521287971
 GameObject:
@@ -4598,7 +4578,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7139487337118875145, guid: f68a18ecfee4cee4da18b3bfbe6c83fa, type: 3}
   m_PrefabInstance: {fileID: 9199981920818743706}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &770982677
 GameObject:
@@ -6016,7 +5995,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 854649271}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &856301832
 GameObject:
@@ -6778,8 +6756,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-<<<<<<< HEAD
-  m_Color: {r: 0.28627452, g: 0.6039216, b: 0.27058825, a: 1}
 =======
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 >>>>>>> Staging
@@ -6789,8 +6765,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-<<<<<<< HEAD
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
 =======
   m_Sprite: {fileID: -8929440768489705544, guid: c902e08bd83e04947b6e8d7f31f385be, type: 3}
 >>>>>>> Staging
@@ -6811,7 +6785,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918332960}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &921583454
 GameObject:
@@ -7125,7 +7098,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6477500031814985363, guid: a81adb518fd2974459b4a5cfb866f51d, type: 3}
   m_PrefabInstance: {fileID: 5414278390415836924}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &1014064491
 GameObject:
@@ -8638,7 +8610,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1541642611}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &1270577772
 GameObject:
@@ -9491,8 +9462,6 @@ GameObject:
   - component: {fileID: 1350252562}
   - component: {fileID: 1350252561}
   m_Layer: 5
-<<<<<<< HEAD
-  m_Name: Audio
 =======
   m_Name: audioButton
 >>>>>>> Staging
@@ -9512,14 +9481,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-<<<<<<< HEAD
-  m_Children:
-  - {fileID: 202476099}
-  m_Father: {fileID: 1561617151}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
 =======
   m_Children: []
   m_Father: {fileID: 223572392}
@@ -9624,7 +9585,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350252559}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &1350855986
 GameObject:
@@ -9796,7 +9756,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374399639}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &1379468416
 GameObject:
@@ -10348,8 +10307,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1807383168}
-<<<<<<< HEAD
-  - {fileID: 1350252560}
 =======
   - {fileID: 223572392}
 >>>>>>> Staging
@@ -10386,7 +10343,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
-<<<<<<< HEAD
 =======
 --- !u!1 &1563116618
 GameObject:
@@ -10976,7 +10932,6 @@ RectTransform:
   m_AnchoredPosition: {x: -5.113495, y: 0.00005722046}
   m_SizeDelta: {x: -10.227, y: -35.58}
   m_Pivot: {x: 0.5, y: 0.5}
-<<<<<<< HEAD
 =======
 --- !u!1 &1673466840
 GameObject:
@@ -11461,7 +11416,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
-<<<<<<< HEAD
 =======
 --- !u!1 &1780675205
 GameObject:
@@ -11943,8 +11897,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-<<<<<<< HEAD
-  m_Color: {r: 0.9882353, g: 1, b: 1, a: 1}
 =======
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 >>>>>>> Staging
@@ -11972,7 +11924,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807383167}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &1814664509
 GameObject:
@@ -12230,7 +12181,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1541642611}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 =======
 --- !u!1 &1852081614
 GameObject:
@@ -13120,7 +13070,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
-<<<<<<< HEAD
 =======
 --- !u!1 &1937474566
 GameObject:
@@ -13693,9 +13642,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-<<<<<<< HEAD
-  m_AnchoredPosition: {x: 5.979004, y: 0}
-  m_SizeDelta: {x: 14.3073, y: 0}
 =======
   m_AnchoredPosition: {x: 2.9572144, y: 0}
   m_SizeDelta: {x: 20.3506, y: 0}
@@ -13714,26 +13660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-<<<<<<< HEAD
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-=======
-  m_Color: {r: 0.98823535, g: 0.98823535, b: 0.98823535, a: 1}
->>>>>>> Staging
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-<<<<<<< HEAD
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
 =======
   m_Sprite: {fileID: 2193479657588290036, guid: c902e08bd83e04947b6e8d7f31f385be, type: 3}
   m_Type: 1
@@ -13754,7 +13680,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027394600}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &2064879659
 GameObject:
@@ -14525,10 +14450,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1556285971}
-<<<<<<< HEAD
-  - {fileID: 1769495046}
-  - {fileID: 1561617151}
-  - {fileID: 1933889701}
 =======
   - {fileID: 1561617151}
   - {fileID: 1769495046}
@@ -14582,7 +14503,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2131933314}
   m_CullTransparentMesh: 1
-<<<<<<< HEAD
 =======
 --- !u!1 &2135256710
 GameObject:
@@ -15179,7 +15099,6 @@ SceneRoots:
   - {fileID: 257968674}
   - {fileID: 1541642611}
   - {fileID: 337118081}
-<<<<<<< HEAD
 =======
   - {fileID: 142483165}
 >>>>>>> Staging
