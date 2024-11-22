@@ -10,6 +10,8 @@ public class Tool_Inventory : MonoBehaviour
     public int currentToolIndex;
     public static Tool_Inventory tool_inventory;
     public List<Image> toolButtons;
+    [SerializeField] private Sprite selectedSprite;
+    [SerializeField] private Sprite normalSprite;
 
     private void Awake()
     {
@@ -40,12 +42,12 @@ public class Tool_Inventory : MonoBehaviour
                 currentToolIndex = toolIndex;
                 DeactivateAllTools();
             }
-            else if (toolIndex >= 0 && toolIndex < tools.Count)
+            else if (toolIndex >= 0)
             {
                 currentToolIndex = toolIndex;
                 UpdateTool();
-                UpdateToolUI();
             }
+            UpdateToolUI();
         }
     }
 
@@ -107,7 +109,20 @@ public class Tool_Inventory : MonoBehaviour
     {
         for (int i = 0; i < toolButtons.Count; i++)
         {
-            toolButtons[i].type = (i == currentToolIndex) ? Image.Type.Filled : Image.Type.Sliced;
+            toolButtons[i].GetComponent<Button>().interactable = false;
+            toolButtons[i].GetComponent<Button>().interactable = true;
+        }
+
+        for (int i = 0; i < toolButtons.Count; i++)
+        {
+            if (i == currentToolIndex) 
+            {
+                toolButtons[i].sprite = selectedSprite;
+            }
+            else
+            {
+                toolButtons[i].sprite = normalSprite;
+            }
         }
     }
 
