@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Inventory_UI : MonoBehaviour
 {
+    [SerializeField]private GameObject toolTipObject;
     public GameObject inventoryPanel;
     public Player player;
     public List<Slot_UI> slots = new List<Slot_UI>();
@@ -26,23 +27,26 @@ public class Inventory_UI : MonoBehaviour
         {
             inventory_UI = this;
         }
+        
+    }
+    private void Start()
+    {
         buildManager = FindObjectOfType<BuildManager>();
         if (buildManager == null)
         {
-            buildManager = BuildManager.buildManager; 
+            buildManager = BuildManager.buildManager;
         }
         uiManager = FindObjectOfType<UIManager>();
-        if(uiManager == null)
+        if (uiManager == null)
         {
             uiManager = UIManager.uiManager;
         }
         dealerUI = FindObjectOfType<DealerUI>();
-        if(dealerUI == null)
+        if (dealerUI == null)
         {
             dealerUI = DealerUI.dealerUI;
         }
     }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab) && !uiManager.IsSpecificPanelsOpen
@@ -66,6 +70,7 @@ public class Inventory_UI : MonoBehaviour
         {
             RemoveButtonListeners();
             inventoryPanel.SetActive(false);
+            toolTipObject.SetActive(false);
             CountPanel.countPanel.HidePanel();
             TimeManager.timeManager.ResumeTime();
         }

@@ -103,7 +103,7 @@ public class MenuInterface : MonoBehaviour
     #region Start Game Functions
     private void StartGame()
     {
-        SceneManager.LoadScene("MainGame");
+        SceneManager.LoadScene(1);
     }
     #endregion
 

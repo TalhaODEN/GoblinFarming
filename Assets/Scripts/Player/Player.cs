@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static Player player;
     public Inventory inventory;
 
     private void Awake()
     {
+        if (player == null)
+        {
+            player = this;
+        }
+        else
+        {
+            Destroy(player);
+        }
         inventory = new Inventory(27);
     }
     public void DropItem(Collectables item)

@@ -15,13 +15,15 @@ public class DealerUI : MonoBehaviour
         if (dealerUI == null)
         {
             dealerUI = this;
-        }
+        } 
+    }
+    private void Start()
+    {
         if (closeButton != null)
         {
             closeButton.onClick.AddListener(CloseDealerUI);
         }
     }
-
     public void ToggleDealerUI()
     {
         if (IsDealerUIActive())

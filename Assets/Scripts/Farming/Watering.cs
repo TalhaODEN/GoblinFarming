@@ -51,17 +51,19 @@ public class Watering : MonoBehaviour
             if (playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsName("watering") &&
                 playerMovement.animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
             {
+                isAnimationCompleted = true;
                 AudioManager.audioManager.WateringSound(isAnimationCompleted);
                 isWatering = false;
-                isAnimationCompleted = true;
-                WaterCurrentPlant(); 
+                playerMovement.animator.SetBool("isWatering", isWatering);
+                WaterCurrentPlant();
+                StartCoroutine(DelayedAction());
             }
         }
 
-        if (isWatering && !Input.GetMouseButton(0))
+        if (!Input.GetMouseButton(0))
         {
             isWatering = false;
-            playerMovement.animator.SetBool("isWatering", false);
+            playerMovement.animator.SetBool("isWatering", isWatering);
             isAnimationCompleted = false;
             AudioManager.audioManager.WateringSound(isAnimationCompleted);
         }
@@ -69,7 +71,7 @@ public class Watering : MonoBehaviour
 
     public bool CheckConditions()
     {
-        return Input.GetMouseButtonDown(0) &&
+        return Input.GetMouseButton(0) &&
                tool_inventory.currentToolIndex == tool_inventory.toolButtons.Count - 2 &&
                !playerMovement.animator.GetBool("isMoving") &&
                !isWatering &&
@@ -112,4 +114,9 @@ public class Watering : MonoBehaviour
             }
         }
     }
+    private IEnumerator DelayedAction()
+    {
+        yield return new WaitForSeconds(2f);
+    }
+
 }

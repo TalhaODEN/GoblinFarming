@@ -16,6 +16,10 @@ public class BuildManager : MonoBehaviour
         {
             buildManager = this;
         }
+    }
+
+    private void Start()
+    {
         uiManager = FindObjectOfType<UIManager>();
         buildingPanel.SetActive(false);
     }

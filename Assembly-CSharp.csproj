@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Items\ItemManager.cs" />
     <Compile Include="Assets\Scripts\Farming\Plowing.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
+    <Compile Include="Assets\Scripts\Pause\PauseInterface.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollowing.cs" />
     <Compile Include="Assets\Scripts\Inventory\Inventory.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+    <Compile Include="Assets\Scripts\Save\SaveManager.cs" />
     <Compile Include="Assets\Scripts\Farming\Planting.cs" />
     <Compile Include="Assets\Scripts\Farming\SeedInfo.cs" />
     <Compile Include="Assets\Scripts\Effects\WateringEffect.cs" />
@@ -102,7 +104,9 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\Build\RequirementManager.cs" />
     <Compile Include="Assets\Scripts\Menu\MenuInterface.cs" />
+    <Compile Include="Assets\Scripts\Farming\MillAction.cs" />
     <Compile Include="Assets\Scripts\Environment\RockBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Save\SaveData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />

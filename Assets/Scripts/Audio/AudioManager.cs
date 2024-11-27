@@ -12,6 +12,11 @@ public class AudioManager : MonoBehaviour
         if(audioManager == null)
         {
             audioManager = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
         }
     }
     public void Footsteps(bool moving)

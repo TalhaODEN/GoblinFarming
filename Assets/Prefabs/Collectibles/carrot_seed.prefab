@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 308536749
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 082e04334e27ff9499b621c01d145a21, type: 3}
+  m_Sprite: {fileID: -1914562544, guid: 303c49342c84eae4eacbab06b4dc7645, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  icon: {fileID: 21300000, guid: 082e04334e27ff9499b621c01d145a21, type: 3}
+  icon: {fileID: -1914562544, guid: 303c49342c84eae4eacbab06b4dc7645, type: 3}
   rb2d: {fileID: -4516981608694909255}
   priceForSell: 5
   rotationSpeed: 200

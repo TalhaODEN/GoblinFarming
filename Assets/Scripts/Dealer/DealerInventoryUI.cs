@@ -59,7 +59,7 @@ public class DealerInventoryUI : MonoBehaviour
             {
                 selectedDealerIndex = -1;
             }
-            ChoosedItem.choosedItem.PlayerItemImages[index].type = Image.Type.Simple;
+            ChoosedItem.choosedItem.PlayerItemImages[index].pixelsPerUnitMultiplier = 64;
             OpenSellPanel();
             GetPrice(1);
             count = 1;
@@ -77,7 +77,7 @@ public class DealerInventoryUI : MonoBehaviour
             {
                 selectedPlayerIndex = -1;
             }
-            ChoosedItem.choosedItem.ShopItemImages[index2].type = Image.Type.Simple;
+            ChoosedItem.choosedItem.ShopItemImages[index2].pixelsPerUnitMultiplier = 64;
             OpenBuyPanel();
             GetPrice(0);
             count = 1;
@@ -93,13 +93,13 @@ public class DealerInventoryUI : MonoBehaviour
         {
             if (i < slots.Count && slots[i].itemIcon.sprite != null)
             {
-                ChoosedItem.choosedItem.PlayerItemImages[i].type = Image.Type.Tiled;
+                ChoosedItem.choosedItem.PlayerItemImages[i].pixelsPerUnitMultiplier = 200;
             }
 
             if (i < DealerInventory.dealerInventory.availableItems.Count &&
                 DealerInventory.dealerInventory.availableItems[i].GetComponentInChildren<ShopItem>().itemType != CollectibleType.None)
             {
-                ChoosedItem.choosedItem.ShopItemImages[i].type = Image.Type.Tiled; 
+                ChoosedItem.choosedItem.ShopItemImages[i].pixelsPerUnitMultiplier = 200;
             }
         }
     }

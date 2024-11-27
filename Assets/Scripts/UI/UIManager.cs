@@ -16,6 +16,11 @@ public class UIManager : MonoBehaviour
         {
             uiManager = this;
         }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
         foreach (GameObject shakebutton in shakeButtonsList)
         {
             isShakingStates.Add(shakebutton,false);

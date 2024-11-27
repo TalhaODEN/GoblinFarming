@@ -7,7 +7,7 @@ public class GoldPanel : MonoBehaviour
     public static int goldAmount;
     public static GoldPanel goldPanel;
 
-    private void Start()
+    private void Awake()
     {
         if (goldPanel == null)
         {

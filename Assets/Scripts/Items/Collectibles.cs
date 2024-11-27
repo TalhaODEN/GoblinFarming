@@ -12,6 +12,9 @@ public enum CollectibleType
     Carrot,
     WoodLog,
     Stone,
+    Wheat,
+    WheatSeed,
+    Flour,
 }
 public class Collectables : MonoBehaviour
 {

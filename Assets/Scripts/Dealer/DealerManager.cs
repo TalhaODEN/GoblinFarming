@@ -11,7 +11,7 @@ public class DealerManager : MonoBehaviour
     private DealerUI dealerUI;
     private Inventory_UI inventory_UI;
     private BuildManager buildManager;
-    private void Awake()
+    private void Start()
     {
         if(uiManager == null)
         {

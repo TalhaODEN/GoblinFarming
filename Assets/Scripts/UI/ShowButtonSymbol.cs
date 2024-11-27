@@ -3,9 +3,9 @@ using System.Collections;
 
 public class ShowButtonSymbol : MonoBehaviour
 {
-    public GameObject buttonSymbol;
-    public float blinkDuration;
-    public Vector3 offset;
+    [SerializeField] private GameObject buttonSymbol;
+    [SerializeField] private float blinkDuration;
+    [SerializeField] private Vector3 offset;
     private Coroutine blinkCoroutine;
     private RectTransform buttonSymbolRectTransform;
     private bool isBlinking = false;

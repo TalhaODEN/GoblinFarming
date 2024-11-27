@@ -25,12 +25,15 @@ public class ItemManager : MonoBehaviour
         {
             itemManager = this;
         }
+        
+    }
+    private void Start()
+    {
         foreach (Collectables item in collectableItems)
         {
             AddItem(item);
         }
     }
-
     private void AddItem(Collectables item)
     {
         if (!collectableItemsDict.ContainsKey(item.type))

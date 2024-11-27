@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 308536749
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c6aca2028c894cf4d91f03ec7179a606, type: 3}
+  m_Sprite: {fileID: -240930474, guid: 303c49342c84eae4eacbab06b4dc7645, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -131,12 +131,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.01334611, y: 0.18930204}
+    - - {x: 0.047788396, y: 0.22526225}
       - {x: -0.04405111, y: 0.202045}
       - {x: -0.08322315, y: 0.20369545}
-      - {x: -0.2529152, y: 0.22327672}
-      - {x: -0.19735722, y: 0.06840442}
-      - {x: -0.19404598, y: 0.02153802}
+      - {x: -0.08446841, y: 0.35270077}
+      - {x: -0.22036956, y: 0.3364295}
+      - {x: -0.36711863, y: 0.21878198}
+      - {x: -0.35646918, y: 0.085426874}
+      - {x: -0.2227356, y: 0.08413693}
+      - {x: -0.22486264, y: -0.12679799}
       - {x: -0.17408942, y: -0.09283292}
       - {x: -0.102430776, y: -0.15790063}
       - {x: -0.001944257, y: -0.24119483}
@@ -147,7 +150,7 @@ PolygonCollider2D:
       - {x: 0.27696875, y: -0.09341769}
       - {x: 0.26052225, y: -0.0035261773}
       - {x: 0.21491773, y: 0.048970517}
-      - {x: 0.041838896, y: 0.11834087}
+      - {x: 0.10709785, y: 0.17452878}
   m_UseDelaunayMesh: 0
 --- !u!114 &9077789666580345880
 MonoBehaviour:
@@ -162,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  icon: {fileID: 21300000, guid: c6aca2028c894cf4d91f03ec7179a606, type: 3}
+  icon: {fileID: -240930474, guid: 303c49342c84eae4eacbab06b4dc7645, type: 3}
   rb2d: {fileID: 404765042264475991}
   priceForSell: 30
   rotationSpeed: 300

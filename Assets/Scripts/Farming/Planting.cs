@@ -41,13 +41,14 @@ public class Planting : MonoBehaviour
         {
             tool_inventory = Tool_Inventory.tool_inventory;
         }
-
+    }
+    private void Start()
+    {
         if (cursorObjectPrefab != null)
         {
             cursorObject = Instantiate(cursorObjectPrefab);
         }
     }
-
     private void Update()
     {
         int currentHour = Mathf.FloorToInt(TimeManager.timeManager.gameTime);
