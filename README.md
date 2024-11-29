@@ -2,9 +2,7 @@
 ## Ekran Görüntüleri
 
 ![Görsel 1](./Assets/images/1.png)  
-![Görsel 2](./Assets/images/2.png)  
-![Görsel 3](./Assets/images/3.png)  
-![Görsel 4](./Assets/images/4.png)  
+![Görsel 2](./Assets/images/2.png)   
 ![Görsel 5](./Assets/images/5.png)  
 ![Görsel 6](./Assets/images/6.png)  
 ![Görsel 7](./Assets/images/7.png)  
