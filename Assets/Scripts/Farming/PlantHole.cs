@@ -30,10 +30,7 @@ public class PlantHole : MonoBehaviour
                 ResetPlanting();
             }
         }
-        else
-        {
-            ResetPlanting();
-        }
+
     }
 
     private void UpdateInteractableBounds()
@@ -90,9 +87,10 @@ public class PlantHole : MonoBehaviour
         {
             SetTile(cellPosition, plantHoleTile);
             PlayerMovement.playerMovement.animator.SetBool("isDigging", false);
-            
+            isPlanting = false;
+
         }
-        isPlanting = false;
+        
     }
 
     private void ResetPlanting()
